@@ -318,56 +318,56 @@ void libsbox::execution_target::start_proxy() {
 
 void libsbox::execution_target::freopen_fds() {
     // TODO: rules
-    if (!this->stdin.filename.empty()) {
-        this->stdin.fd = open(this->stdin.filename.c_str(), O_RDONLY);
-        if (this->stdin.fd < 0) {
-            libsbox::die("Cannot open %s (%s)", this->stdin.filename.c_str(), strerror(errno));
+    if (!this->stream_stdin.filename.empty()) {
+        this->stream_stdin.fd = open(this->stream_stdin.filename.c_str(), O_RDONLY);
+        if (this->stream_stdin.fd < 0) {
+            libsbox::die("Cannot open %s (%s)", this->stream_stdin.filename.c_str(), strerror(errno));
         }
     }
 
-    if (!this->stdout.filename.empty()) {
-        this->stdout.fd = open(this->stdout.filename.c_str(), O_WRONLY | O_TRUNC);
-        if (this->stdout.fd < 0) {
-            libsbox::die("Cannot open %s (%s)", this->stdout.filename.c_str(), strerror(errno));
+    if (!this->stream_stdout.filename.empty()) {
+        this->stream_stdout.fd = open(this->stream_stdout.filename.c_str(), O_WRONLY | O_TRUNC);
+        if (this->stream_stdout.fd < 0) {
+            libsbox::die("Cannot open %s (%s)", this->stream_stdout.filename.c_str(), strerror(errno));
         }
     }
 
-    if (!this->stderr.filename.empty()) {
-        this->stderr.fd = open(this->stderr.filename.c_str(), O_WRONLY | O_TRUNC);
-        if (this->stderr.fd < 0) {
-            libsbox::die("Cannot open %s (%s)", this->stderr.filename.c_str(), strerror(errno));
+    if (!this->stream_stderr.filename.empty()) {
+        this->stream_stderr.fd = open(this->stream_stderr.filename.c_str(), O_WRONLY | O_TRUNC);
+        if (this->stream_stderr.fd < 0) {
+            libsbox::die("Cannot open %s (%s)", this->stream_stderr.filename.c_str(), strerror(errno));
         }
     }
 }
 
 void libsbox::execution_target::dup2_fds() {
     if (close(0) != 0) {
-        libsbox::die("Cannot close stdin");
+        libsbox::die("Cannot close stream_stdin");
     }
 
     if (close(1) != 0) {
-        libsbox::die("Cannot close stdout");
+        libsbox::die("Cannot close stream_stdout");
     }
 
     if (close(2) != 0) {
-        libsbox::die("Cannot close stderr");
+        libsbox::die("Cannot close stream_stderr");
     }
 
-    if (this->stdin.fd != -1) {
-        if (dup2(this->stdin.fd, 0) != 0) {
-            libsbox::die("Cannot dup2 stdin (%s)", strerror(errno));
+    if (this->stream_stdin.fd != -1) {
+        if (dup2(this->stream_stdin.fd, 0) != 0) {
+            libsbox::die("Cannot dup2 stream_stdin (%s)", strerror(errno));
         }
     }
 
-    if (this->stdout.fd != -1) {
-        if (dup2(this->stdout.fd, 1) != 1) {
-            libsbox::die("Cannot dup2 stdout (%s)", strerror(errno));
+    if (this->stream_stdout.fd != -1) {
+        if (dup2(this->stream_stdout.fd, 1) != 1) {
+            libsbox::die("Cannot dup2 stream_stdout (%s)", strerror(errno));
         }
     }
 
-    if (this->stderr.fd != -1) {
-        if (dup2(this->stderr.fd, 2) != 2) {
-            libsbox::die("Cannot dup2 stderr (%s)", strerror(errno));
+    if (this->stream_stderr.fd != -1) {
+        if (dup2(this->stream_stderr.fd, 2) != 2) {
+            libsbox::die("Cannot dup2 stream_stderr (%s)", strerror(errno));
         }
     }
 }

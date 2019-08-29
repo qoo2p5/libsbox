@@ -32,14 +32,14 @@ libsbox::execution_target *target_from_json(json &jtarget) {
     target->fsize_limit = jtarget["fsize_limit"];
     target->max_files = jtarget["max_files"];
     target->max_threads = jtarget["max_threads"];
-    if (jtarget["stdin"].is_string()) {
-        target->stdin.freopen(jtarget["stdin"]);
+    if (jtarget["stream_stdin"].is_string()) {
+        target->stream_stdin.freopen(jtarget["stream_stdin"]);
     }
-    if (jtarget["stdout"].is_string()) {
-        target->stdout.freopen(jtarget["stdout"]);
+    if (jtarget["stream_stdout"].is_string()) {
+        target->stream_stdout.freopen(jtarget["stream_stdout"]);
     }
-    if (jtarget["stderr"].is_string()) {
-        target->stderr.freopen(jtarget["stderr"]);
+    if (jtarget["stream_stderr"].is_string()) {
+        target->stream_stderr.freopen(jtarget["stream_stderr"]);
     }
     if (jtarget["use_standard_rules"].is_boolean() && jtarget["use_standard_rules"].get<bool>()) {
         target->add_standard_rules();
@@ -72,17 +72,17 @@ libsbox::execution_context *context_from_json(json &jcontext) {
         }
 
         int id = jpipe["write_end"]["id"];
-        if (jpipe["write_end"]["stream"] == "stdout") {
-            write_end = &targets[id]->stdout;
-        } else if (jpipe["write_end"]["stream"] == "stderr") {
-            write_end = &targets[id]->stderr;
+        if (jpipe["write_end"]["stream"] == "stream_stdout") {
+            write_end = &targets[id]->stream_stdout;
+        } else if (jpipe["write_end"]["stream"] == "stream_stderr") {
+            write_end = &targets[id]->stream_stderr;
         } else {
             error("Unknown output stream: " + (std::string) jpipe["write_end"]["stream"]);
         }
 
         id = jpipe["read_end"]["id"];
-        if (jpipe["read_end"]["stream"] == "stdin") {
-            read_end = &targets[id]->stdin;
+        if (jpipe["read_end"]["stream"] == "stream_stdin") {
+            read_end = &targets[id]->stream_stdin;
         } else {
             error("Unknown input stream: " + (std::string) jpipe["read_end"]["stream"]);
         }

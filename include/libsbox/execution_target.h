@@ -28,8 +28,8 @@ public:
     int max_files = 64;
     int max_threads = 1;
 
-    in_stream stdin;
-    out_stream stdout, stderr;
+    in_stream stream_stdin;
+    out_stream stream_stdout, stream_stderr;
 
     // stats
     long time_usage = 0;
