@@ -16,7 +16,7 @@
 #include <string>
 #include <sys/mount.h>
 #include <sys/stat.h>
-#include <wait.h>
+#include <sys/wait.h>
 #include <fcntl.h>
 #include <dirent.h>
 #include <sys/time.h>
