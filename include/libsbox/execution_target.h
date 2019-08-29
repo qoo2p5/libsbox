@@ -12,6 +12,7 @@
 #include <vector>
 #include <string>
 #include <map>
+#include <unistd.h>
 
 namespace libsbox {
     class execution_target;

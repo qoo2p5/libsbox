@@ -10,6 +10,7 @@
 #include <libsbox/cgroup.h>
 
 #include <vector>
+#include <sys/time.h>
 
 namespace libsbox {
     class execution_context;
